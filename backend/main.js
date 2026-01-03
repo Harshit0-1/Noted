@@ -1,9 +1,9 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('node:path');
+const fs = require('fs');
 app.commandLine.appendSwitch('disable-features', 'AutofillServerCommunication');
 
 const FFmpegRecorder = require('./recorder');
-const { processRecording } = require('./agent');
 
 const osType = process.platform;
 console.log("Platform:", osType);
@@ -46,8 +46,24 @@ app.whenReady().then(() => {
     ipcMain.handle('enhance-notes', async (event, { audioPath, notes }) => {
         console.log("Enhancing notes for:", audioPath);
         try {
-            const result = await processRecording(audioPath, notes);
-            return { success: true, ...result };
+            const formData = new FormData();
+            const audioBuffer = fs.readFileSync(audioPath);
+            const audioBlob = new Blob([audioBuffer], { type: 'audio/wav' });
+            formData.append('audio', audioBlob, 'recording.wav');
+            formData.append('notes', notes);
+
+            const response = await fetch('http://localhost:3000/enhance-notes', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Server error: ${response.status} ${errorText}`);
+            }
+
+            const result = await response.json();
+            return result;
         } catch (error) {
             console.error("Error enhancing notes:", error);
             return { success: false, error: error.message };

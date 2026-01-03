@@ -4,7 +4,6 @@ const { StateGraph, START, END } = require('@langchain/langgraph');
 const dotenv = require('dotenv');
 const z = require('zod');
 const fs = require('fs');
-const { execSync } = require('child_process');
 
 dotenv.config();
 
@@ -89,8 +88,6 @@ const graph = new StateGraph(AgentState)
     .addEdge('enhanceNotes', END);
 
 const app = graph.compile();
-
-
 
 async function processRecording(audioPath, userNotes) {
     const initialState = {
