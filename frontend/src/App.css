@@ -1,42 +1,203 @@
+:root {
+  --primary-color: #10B981;
+  /* Mint Green */
+  --text-color: #1F2937;
+  --text-secondary: #6B7280;
+  --bg-color: #FFFFFF;
+  --accent-bg: #F3F4F6;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
 #root {
-  max-width: 1280px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  max-width: 900px;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
+  position: relative;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Editor Area */
+.editor-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 100px;
+  /* Space for floating bar */
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.editor-textarea {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  font-size: 1.125rem;
+  line-height: 1.75;
+  color: var(--text-color);
+  background: transparent;
+  font-family: inherit;
+  padding: 1rem 0;
+}
+
+.editor-textarea::placeholder {
+  color: #9CA3AF;
+}
+
+/* Floating Control Bar */
+.control-bar-container {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.control-pill {
+  background: white;
+  border-radius: 9999px;
+  padding: 0.75rem 1.5rem;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border: 1px solid #E5E7EB;
+  transition: all 0.2s ease;
+}
+
+.control-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.record-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.record-btn.start {
+  background-color: #EF4444;
+  /* Red for record */
+  color: white;
+}
+
+.record-btn.stop {
+  background-color: #F3F4F6;
+  color: #374151;
+}
+
+.record-btn.stop:hover {
+  background-color: #E5E7EB;
+}
+
+.waveform-visualizer {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 24px;
+}
+
+.wave-bar {
+  width: 3px;
+  background-color: var(--primary-color);
+  border-radius: 99px;
+  animation: wave 1s ease-in-out infinite;
+}
+
+@keyframes wave {
+
+  0%,
+  100% {
+    height: 4px;
   }
-  to {
-    transform: rotate(360deg);
+
+  50% {
+    height: 16px;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+/* Status Badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
 }
 
-.card {
-  padding: 2em;
+.status-badge.transcribing {
+  background-color: #D1FAE5;
+  color: #065F46;
 }
 
-.read-the-docs {
-  color: #888;
+.status-badge.enhancing {
+  background-color: #DBEAFE;
+  color: #1E40AF;
+}
+
+/* Enhanced Result Styling */
+.enhanced-content h1,
+.enhanced-content h2,
+.enhanced-content h3 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: 600;
+}
+
+.enhanced-content ul,
+.enhanced-content ol {
+  margin-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+.enhanced-content p {
+  margin-bottom: 1em;
+}
+
+/* Source Selector (Subtle) */
+.source-select {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  outline: none;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.source-select:hover {
+  opacity: 1;
 }

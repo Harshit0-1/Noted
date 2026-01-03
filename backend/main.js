@@ -1,7 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('node:path');
 const fs = require('fs');
-app.commandLine.appendSwitch('disable-features', 'AutofillServerCommunication');
 
 const FFmpegRecorder = require('./recorder');
 
@@ -23,17 +22,23 @@ const createWindow = () => {
     });
 
    
-    win.loadURL('http://localhost:5173').catch(() => {
-        console.log("Vite server not running, loading index.html");
-        win.loadFile(path.join(__dirname, '../frontend/dist/index.html'));
-    });
-    
- 
+    if (app.isPackaged) {
+        win.loadFile(path.join(__dirname, 'frontend/dist/index.html'));
+    } else {
+        win.loadURL('http://localhost:5173').catch(() => {
+            console.log("Vite server not running, loading index.html");
+            win.loadFile(path.join(__dirname, '../frontend/dist/index.html'));
+        });
+    }
 }
 
 app.whenReady().then(() => {
     ipcMain.handle('start-recording', async (event, micSource) => {
-        const outputPath = path.join(__dirname, `./recordings/recording_${Date.now()}.wav`);
+        const recordingsPath = path.join(app.getPath('userData'), 'recordings');
+        if (!fs.existsSync(recordingsPath)) {
+            fs.mkdirSync(recordingsPath, { recursive: true });
+        }
+        const outputPath = path.join(recordingsPath, `recording_${Date.now()}.wav`);
         recorder.start(outputPath, micSource);
         return outputPath;
     });

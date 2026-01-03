@@ -94,13 +94,12 @@ const enhanceNotes = async (state) => {
     const prompt = `You are an expert note-taker and editor.
     
     I have some raw notes I took during a meeting, and I also have the full transcript of the meeting.
-    Your goal is to clean up and clarify my notes, NOT to rewrite them entirely.
-    
-    Instructions:
-    1. **Preserve the Core**: Keep the original structure, tone, and key points of my raw notes. Do not change the meaning.
-    2. **Clarify & Expand**: Use the transcript *only* to fill in gaps, correct specific details (names, numbers, dates), or clarify ambiguous bullet points.
-    3. **No Hallucinations**: Do not add topics that are not mentioned in the notes, even if they are in the transcript, unless they are critical context for a point I *did* write down.
-    4. **Language**: If the transcript is in a different language, translate the enhanced notes to English (unless my notes are in that language).
+    Please enhance my notes using the transcript. 
+    - Clarify any ambiguous points in my notes using the transcript.
+    - Add missing important details from the transcript that I missed.
+    - Fix any factual errors in my notes based on the transcript.
+    - Maintain the style and structure of my original notes where possible, but make them more professional and complete.
+    - If the transcript is in a different language, translate the enhanced notes to English unless the notes themselves are in that language.
     
     Raw Notes:
     ${notes}
