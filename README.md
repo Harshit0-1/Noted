@@ -13,8 +13,6 @@ Noted takes meeting audio, transcripts, and messy notes to generate clear, struc
 
 - **backend/**: Electron main process and backend logic.
 - **frontend/**: React-based user interface.
-- **main/**: Additional main process resources (if any).
-- **test/**: Test files.
 
 ## Getting Started
 
@@ -40,7 +38,3 @@ To run both frontend and backend concurrently:
 ```bash
 npm run dev
 ```
-
-## License
-
-ISC
